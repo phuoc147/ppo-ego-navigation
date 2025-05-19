@@ -14,7 +14,7 @@ if __name__ == "__main__":
     parser.add_argument("--cars_num", type=int, default=50, help="Number of cars in the environment")
     args = parser.parse_args()
     model_name = args.model
-    env = CarEnv(args.cars_num,is_training=False,history_len=5)
+    env = CarEnv(args.cars_num,is_training=False,history_len=5,max_collide_num=1)
     model = PPO.load(model_name, env=env)
 
     screen = pg.display.set_mode((WIDTH, HEIGHT))

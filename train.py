@@ -4,13 +4,6 @@ from model import TransformerExtractor
 import argparse
 
 
-policy_kwargs = dict(
-    features_extractor_class=TransformerExtractor,
-    features_extractor_kwargs=dict(env=env)
-)
-def count_parameters(model:PPO):
-    return len(model.get_parameters())
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train a PPO agent with transformer features extractor")
     parser.add_argument("--total_timesteps", type=int, default=50000, help="Total timesteps for training")
@@ -20,7 +13,11 @@ if __name__ == "__main__":
     parser.add_argument("--cars_num", type=int, default=50, help="Number of cars in the environment")
     args = parser.parse_args()
 
-    env = CarEnv(args.cars_num,is_training=True,history_len=5)
+    env = CarEnv(args.cars_num,is_training=True,history_len=5,max_collide_num=1)
+    policy_kwargs = dict(
+        features_extractor_class=TransformerExtractor,
+        features_extractor_kwargs=dict(env=env)
+    )
     pretrain_model = args.pretrained_model
     total_timesteps = args.total_timesteps
     batch_size = args.batch_size
